@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using System.Data.SqlClient;
-using System.Data.OracleClient;
 using DevExpress.XtraScheduler;
 
 namespace SchedulerSQLRuntime {
@@ -15,16 +10,14 @@ namespace SchedulerSQLRuntime {
             InitializeComponent();
 
             // Subscribe to Storage events required for updating the data source. 
-            this.schedulerStorage1.AppointmentsInserted += OnApptChangedInsertedDeleted;
-            this.schedulerStorage1.AppointmentsChanged += OnApptChangedInsertedDeleted;
-            this.schedulerStorage1.AppointmentsDeleted += OnApptChangedInsertedDeleted;
+            this.schedulerDataStorage1.AppointmentsInserted += OnApptChangedInsertedDeleted;
+            this.schedulerDataStorage1.AppointmentsChanged += OnApptChangedInsertedDeleted;
+            this.schedulerDataStorage1.AppointmentsDeleted += OnApptChangedInsertedDeleted;
 
             //// Uncomment the code below to demonstrate how to store and retrieve data in the appointment custom field.
             //// Do not forget to uncomment event handlers.
             //this.schedulerControl1.InitAppointmentDisplayText += schedulerControl1_InitAppointmentDisplayText;
             //this.schedulerControl1.InitNewAppointment += schedulerControl1_InitNewAppointment;
-
-
         }
 
         // Modify this string if required to connect to your database.
@@ -37,7 +30,7 @@ namespace SchedulerSQLRuntime {
 
         private void Form1_Load(object sender, EventArgs e) {
 
-            this.schedulerStorage1.Appointments.ResourceSharing= true;
+            this.schedulerDataStorage1.Appointments.ResourceSharing= true;
             this.schedulerControl1.GroupType = SchedulerGroupType.Resource;
             this.schedulerControl1.Start = DateTime.Today;
             
@@ -68,36 +61,35 @@ namespace SchedulerSQLRuntime {
 
             DXSchedulerConn.Close();
 
-            this.schedulerStorage1.Appointments.DataSource = DXSchedulerDataset;
-            this.schedulerStorage1.Appointments.DataMember = "Appointments";
-            this.schedulerStorage1.Resources.DataSource = DXSchedulerDataset;
-            this.schedulerStorage1.Resources.DataMember = "Resources";
-
+            this.schedulerDataStorage1.Appointments.DataSource = DXSchedulerDataset;
+            this.schedulerDataStorage1.Appointments.DataMember = "Appointments";
+            this.schedulerDataStorage1.Resources.DataSource = DXSchedulerDataset;
+            this.schedulerDataStorage1.Resources.DataMember = "Resources";
         }
 
         private void MapAppointmentData()
         {
-            this.schedulerStorage1.Appointments.Mappings.AllDay = "AllDay";
-            this.schedulerStorage1.Appointments.Mappings.Description = "Description";
+            this.schedulerDataStorage1.Appointments.Mappings.AllDay = "AllDay";
+            this.schedulerDataStorage1.Appointments.Mappings.Description = "Description";
             // Required mapping.
-            this.schedulerStorage1.Appointments.Mappings.End = "EndDate";
-            this.schedulerStorage1.Appointments.Mappings.Label = "Label";
-            this.schedulerStorage1.Appointments.Mappings.Location = "Location";
-            this.schedulerStorage1.Appointments.Mappings.RecurrenceInfo = "RecurrenceInfo";
-            this.schedulerStorage1.Appointments.Mappings.ReminderInfo = "ReminderInfo";
+            this.schedulerDataStorage1.Appointments.Mappings.End = "EndDate";
+            this.schedulerDataStorage1.Appointments.Mappings.Label = "Label";
+            this.schedulerDataStorage1.Appointments.Mappings.Location = "Location";
+            this.schedulerDataStorage1.Appointments.Mappings.RecurrenceInfo = "RecurrenceInfo";
+            this.schedulerDataStorage1.Appointments.Mappings.ReminderInfo = "ReminderInfo";
             // Required mapping.
-            this.schedulerStorage1.Appointments.Mappings.Start = "StartDate";
-            this.schedulerStorage1.Appointments.Mappings.Status = "Status";
-            this.schedulerStorage1.Appointments.Mappings.Subject = "Subject";
-            this.schedulerStorage1.Appointments.Mappings.Type = "Type";
-            this.schedulerStorage1.Appointments.Mappings.ResourceId = "ResourceIDs";
-            this.schedulerStorage1.Appointments.CustomFieldMappings.Add(new AppointmentCustomFieldMapping("MyNote", "CustomField1")); 
+            this.schedulerDataStorage1.Appointments.Mappings.Start = "StartDate";
+            this.schedulerDataStorage1.Appointments.Mappings.Status = "Status";
+            this.schedulerDataStorage1.Appointments.Mappings.Subject = "Subject";
+            this.schedulerDataStorage1.Appointments.Mappings.Type = "Type";
+            this.schedulerDataStorage1.Appointments.Mappings.ResourceId = "ResourceIDs";
+            this.schedulerDataStorage1.Appointments.CustomFieldMappings.Add(new AppointmentCustomFieldMapping("MyNote", "CustomField1")); 
         }
 
         private void MapResourceData()
         {
-            this.schedulerStorage1.Resources.Mappings.Id = "ResourceID";
-            this.schedulerStorage1.Resources.Mappings.Caption = "ResourceName";
+            this.schedulerDataStorage1.Resources.Mappings.Id = "ResourceID";
+            this.schedulerDataStorage1.Resources.Mappings.Caption = "ResourceName";
         }
 
         // Retrieve identity value for an inserted appointment.
@@ -128,11 +120,10 @@ namespace SchedulerSQLRuntime {
         //    e.Appointment.CustomFields["MyNote"] = String.Format("Created on {0:d} at {0:t} \n", DateTime.Now);
         //}
 
-        //// Modify default appointment text to display a custom value.
+        // Modify default appointment text to display a custom value.
         //private void schedulerControl1_InitAppointmentDisplayText(object sender, AppointmentDisplayTextEventArgs e)
         //{
         //    e.Text = (e.Appointment.CustomFields["MyNote"] is DBNull) ? String.Empty : (string)e.Appointment.CustomFields["MyNote"];
         //}
-
     }
 }
