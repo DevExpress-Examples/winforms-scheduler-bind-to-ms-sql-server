@@ -1,3 +1,9 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [Form1.cs](./CS/SchedulerSQLRuntime/Form1.cs) (VB: [Form1.vb](./VB/SchedulerSQLRuntime/Form1.vb))
+* [Program.cs](./CS/SchedulerSQLRuntime/Program.cs) (VB: [Program.vb](./VB/SchedulerSQLRuntime/Program.vb))
+<!-- default file list end -->
 # How to bind SchedulerControl to MS SQL Server database at runtime
 
 
