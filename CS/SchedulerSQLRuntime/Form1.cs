@@ -25,7 +25,6 @@ namespace SchedulerSQLRuntime {
         
         DataSet DXSchedulerDataset;        
         SqlDataAdapter AppointmentDataAdapter;
-        SqlDataAdapter ResourceDataAdapter;
         SqlConnection DXSchedulerConn;
 
         private void Form1_Load(object sender, EventArgs e) {
@@ -46,18 +45,19 @@ namespace SchedulerSQLRuntime {
             AppointmentDataAdapter.RowUpdated += new SqlRowUpdatedEventHandler(AppointmentDataAdapter_RowUpdated);
             AppointmentDataAdapter.Fill(DXSchedulerDataset, "Appointments");
 
-            ResourceDataAdapter = new SqlDataAdapter(selectResources, DXSchedulerConn);
-            ResourceDataAdapter.Fill(DXSchedulerDataset, "Resources");
+            using(var ResourceDataAdapter = new SqlDataAdapter(selectResources, DXSchedulerConn))
+                ResourceDataAdapter.Fill(DXSchedulerDataset, "Resources");
 
             // Specify mappings.
             MapAppointmentData();
             MapResourceData();
 
             // Generate commands using CommandBuilder.  
-            SqlCommandBuilder cmdBuilder = new SqlCommandBuilder(AppointmentDataAdapter);
-            AppointmentDataAdapter.InsertCommand = cmdBuilder.GetInsertCommand();
-            AppointmentDataAdapter.DeleteCommand = cmdBuilder.GetDeleteCommand();
-            AppointmentDataAdapter.UpdateCommand = cmdBuilder.GetUpdateCommand();
+            using(var cmdBuilder = new SqlCommandBuilder(AppointmentDataAdapter)) {
+                AppointmentDataAdapter.InsertCommand = cmdBuilder.GetInsertCommand();
+                AppointmentDataAdapter.DeleteCommand = cmdBuilder.GetDeleteCommand();
+                AppointmentDataAdapter.UpdateCommand = cmdBuilder.GetUpdateCommand();
+            }
 
             DXSchedulerConn.Close();
 
