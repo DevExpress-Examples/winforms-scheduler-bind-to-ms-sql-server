@@ -3,21 +3,50 @@
 [![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/E551)
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
-# How to bind SchedulerControl to MS SQL Server database at runtime
+# WinForms Scheduler - Bind to MS SQL Server (runtime)
+
+This example shows how to bind the `SchedulerControl` to a MS SQL Server database at runtime. The `SqlCommandBuilder` class is used to generate SQL queries.
+
+The example uses the MS SQL Server database. You can create a new database using the *.sql* script file included in the project, or connect to another database. Check the code that specifies mappings to ensure that all data fields are correctly mapped to appointment properties.
+
+In this example:
+
+* Define mappings.
+  
+  The `UniqueID` field in the **Appointments** table is not mapped because it is an identity auto-incremented field updated by MS SQL Sever. If you map it, make sure that the [AppointmentStorage.CommitIdToDataSource](https://docs.devexpress.com/WindowsForms/DevExpress.XtraScheduler.AppointmentStorage.CommitIdToDataSource) option is disabled.
+  
+  ```csharp
+  private void MapAppointmentData() {
+      this.schedulerDataStorage1.Appointments.Mappings.AllDay = "AllDay";
+      this.schedulerDataStorage1.Appointments.Mappings.Description = "Description";
+      // Required mapping.
+      this.schedulerDataStorage1.Appointments.Mappings.End = "EndDate";
+      this.schedulerDataStorage1.Appointments.Mappings.Label = "Label";
+      this.schedulerDataStorage1.Appointments.Mappings.Location = "Location";
+      this.schedulerDataStorage1.Appointments.Mappings.RecurrenceInfo = "RecurrenceInfo";
+      this.schedulerDataStorage1.Appointments.Mappings.ReminderInfo = "ReminderInfo";
+      // Required mapping.
+      this.schedulerDataStorage1.Appointments.Mappings.Start = "StartDate";
+      this.schedulerDataStorage1.Appointments.Mappings.Status = "Status";
+      this.schedulerDataStorage1.Appointments.Mappings.Subject = "Subject";
+      this.schedulerDataStorage1.Appointments.Mappings.Type = "Type";
+      this.schedulerDataStorage1.Appointments.Mappings.ResourceId = "ResourceIDs";
+      this.schedulerDataStorage1.Appointments.CustomFieldMappings.Add(new AppointmentCustomFieldMapping("MyNote", "CustomField1"));
+  }
+  ```
+* Set the `ResourceSharing` property to **true** to assign multiple resources to appointments.
+  
+  ```csharp
+  this.schedulerDataStorage1.Appointments.ResourceSharing = true;
+  ```
+  
+  If the `ResourceSharing` property is set to **false** (the default value), the [AppointmentMappingInfo.ResourceId](https://docs.devexpress.com/CoreLibraries/DevExpress.XtraScheduler.AppointmentMappingInfo.ResourceId) property should be set to the database field that contains the value of the resource ID which is associated with the appointment. This field must contain values of the same type as the resource ID. The `Scheduler` control does not restrict the type of resource ID to a particular .NET type. You can use any data type if the types of corresponding fields in **Appointment** and **Resource** data tables match.
+
+If your database server is not MS SQL, you can replace `SqlDataAdapter` and `SqlCommandBuilder` with the another data adapter and command builder (for example, `OracleDataAdapter` and `OracleCommandBuilder`.
 
 
-<p>This example shows how you can bind the SchedulerControl to an <strong>SQL Server</strong> database at runtime. The <strong>SqlCommandBuilder</strong> is used to generate SQL queries, however you can modify them as required or specify your own queries.<br />
-The project uses MS SQL Server database. You can create a new database using the .sql script file included in the project, or use already existing database. Check the code that specifies mappings to ensure that all data fields are correctly mapped to appointment properties. <br />
-Note that mappings for the Start and End appointment properties are required.  The UniqueID field in the Appointments table is not mapped, however, because it is an identity auto-incremented field updated by MS SQL Sever itself. If you map it for whatever reason, make sure that the <a href="http://documentation.devexpress.com/#WindowsForms/DevExpressXtraSchedulerAppointmentStorage_CommitIdToDataSourcetopic"><u>CommitIdToDataSource</u></a> property is set to <strong>false</strong>.<br />
-This project sets the <a href="http://documentation.devexpress.com/#WPF/DevExpressXpfSchedulerAppointmentStorage_ResourceSharingtopic"><u>ResourceSharing</u></a> property to <strong>true</strong>, so each appointment can be assigned to several resources. The corresponding resource IDs arte stored in XML format in the ResourceIDs field. <br />
-If the <strong>ResourceSharing </strong>property is false (by default), then the <a href="http://documentation.devexpress.com/#CoreLibraries/DevExpressXtraSchedulerAppointmentMappingInfo_ResourceIdtopic"><u>AppointmentMappingInfo.ResourceId</u></a> property should be set to the database field containing the value of the resource ID with which an appointment is associated. Therefore, this field must have the same type as the resource ID. The Scheduler does not restrict the type of resource ID to a particular .NET type, so you can use any data type if the types of the corresponding fields in Appointment and Resource tables will match.</p><p>If your database server is not MS SQL, you can replace SqlDataAdapter and SqlCommandBuilder with the corresponding data adapter and command builder, such as <i>OracleDataAdapter</i> and <i>OracleCommandBuilder</i>.</p>
+## Documentation
 
-
-<h3>Description</h3>
-
-<p>The sample for v2012 vol 2.4 and higher uses MS SQL Server database file included in the project.  The database script is attached as the DXDBScheduler.sql file. Instead of System.Windows.Forms.BindingSource instances the SchedulerStorage is bound to the System.Data.Dataset object which provides data for appointments and resources. The dataset is filled by System.Data.SqlClient.SqlDataAdapter instances at runtime.<br />
-</p>
-
-<br/>
-
-
+* [Data Binding - WinForms Scheduler](https://docs.devexpress.com/WindowsForms/8386/controls-and-libraries/scheduler/data-binding)
+* [Mappings](https://docs.devexpress.com/WindowsForms/15468/controls-and-libraries/scheduler/data-binding/mappings)
+* [Create a Sample SQL Database for Scheduler Appointments and Resources](https://docs.devexpress.com/WindowsForms/9605/controls-and-libraries/scheduler/data-binding/data-sources/microsoft-sql-server)
