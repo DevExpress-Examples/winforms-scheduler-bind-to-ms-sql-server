@@ -40,9 +40,9 @@ In this example:
   this.schedulerDataStorage1.Appointments.ResourceSharing = true;
   ```
   
-  If the `ResourceSharing` property is set to **false** (the default value), the [AppointmentMappingInfo.ResourceId](https://docs.devexpress.com/CoreLibraries/DevExpress.XtraScheduler.AppointmentMappingInfo.ResourceId) property should be set to the database field that contains the value of the resource ID which is associated with the appointment. This field must contain values of the same type as the resource ID. The `Scheduler` control does not restrict the type of resource ID to a particular .NET type. You can use any data type if the types of corresponding fields in **Appointment** and **Resource** data tables match.
+  If the `ResourceSharing` property is set to **false** (the default value), the [AppointmentMappingInfo.ResourceId](https://docs.devexpress.com/CoreLibraries/DevExpress.XtraScheduler.AppointmentMappingInfo.ResourceId) property should be set to the database field that contains the value of the resource ID that is associated with the appointment. This field must contain values of the same type as the resource ID. The `Scheduler` control does not restrict the type of resource ID to a particular .NET type. You can use any data type if the types of corresponding fields in **Appointment** and **Resource** data tables match.
 
-If your database server is not MS SQL, you can replace `SqlDataAdapter` and `SqlCommandBuilder` with the another data adapter and command builder (for example, `OracleDataAdapter` and `OracleCommandBuilder`.
+If your database server is not MS SQL, you can replace `SqlDataAdapter` and `SqlCommandBuilder` with another data adapter and command builder (for example, `OracleDataAdapter` and `OracleCommandBuilder`).
 
 
 ## Documentation
